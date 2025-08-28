@@ -1,0 +1,279 @@
+# requirements.txt - Complete dependency list for RAG Prototype
+
+# Core Streamlit and web framework
+streamlit>=1.28.0
+streamlit-chat>=0.1.0
+
+# AI and Machine Learning
+sentence-transformers>=2.2.2
+scikit-learn>=1.3.0
+numpy>=1.24.0
+torch>=2.0.0
+transformers>=4.30.0
+
+# Google AI Integration
+google-generativeai>=0.3.0
+google-cloud-texttospeech>=2.16.0  # Optional for advanced TTS
+
+# Document Processing
+PyPDF2>=3.0.1
+python-docx>=0.8.11
+langchain-text-splitters>=0.0.1
+
+# Text Processing and Search
+rank-bm25>=0.2.2
+cross-encoder>=1.2.0
+
+# Audio Processing
+gtts>=2.4.0  # Google Text-to-Speech
+pygame>=2.5.0  # Audio playback
+speechrecognition>=3.10.0  # Speech recognition
+pyaudio>=0.2.11  # Microphone input (may require system dependencies)
+
+# Alternative audio libraries (fallbacks)
+pydub>=0.25.1
+simpleaudio>=1.0.4
+
+# Utility Libraries
+python-dotenv>=1.0.0
+requests>=2.31.0
+logging>=0.4.9.6
+uuid>=1.30
+hashlib>=20081119
+pickle5>=0.0.11  # For Python < 3.8 compatibility
+
+# Optional enhancements
+nltk>=3.8.0  # Natural language processing
+spacy>=3.6.0  # Advanced NLP (optional)
+faiss-cpu>=1.7.4  # Efficient similarity search (optional)
+
+# Development and testing
+pytest>=7.4.0
+black>=23.7.0
+flake8>=6.0.0
+
+---
+
+# setup_instructions.md - Complete setup guide
+
+## RAG Prototype Setup Instructions
+
+### 1. System Requirements
+- Python 3.8 or higher
+- 4GB+ RAM recommended
+- Internet connection for AI model downloads
+- Microphone (for voice input)
+- Speakers/headphones (for audio output)
+
+### 2. Installation Steps
+
+#### Step 1: Clone and Navigate
+```bash
+git clone <your-repo-url>
+cd rag-prototype
+```
+
+#### Step 2: Create Virtual Environment (Recommended)
+```bash
+python -m venv venv
+
+# On Windows:
+venv\Scripts\activate
+
+# On macOS/Linux:
+source venv/bin/activate
+```
+
+#### Step 3: Install Dependencies
+```bash
+# Install all requirements
+pip install -r requirements.txt
+
+# For audio features (may require additional system dependencies):
+pip install gtts speechrecognition pygame pyaudio
+```
+
+#### Step 4: System-Specific Audio Setup
+
+**Windows:**
+```bash
+# Usually works out of the box
+pip install pyaudio
+```
+
+**macOS:**
+```bash
+# Install system dependencies first
+brew install portaudio
+pip install pyaudio
+```
+
+**Linux (Ubuntu/Debian):**
+```bash
+# Install system dependencies
+sudo apt-get update
+sudo apt-get install portaudio19-dev python3-pyaudio
+pip install pyaudio
+```
+
+#### Step 5: Set Up API Keys
+Create a `.env` file in the project root:
+```bash
+# Required: Google Gemini API Key
+GEMINI_API_KEY=your_gemini_api_key_here
+# OR
+GOOGLE_API_KEY=your_google_api_key_here
+
+# Optional: Google Cloud TTS (for advanced voice features)
+GOOGLE_APPLICATION_CREDENTIALS=path/to/service-account.json
+```
+
+### 3. Running the Application
+
+```bash
+streamlit run app.py
+```
+
+The application will open in your browser at `http://localhost:8501`
+
+### 4. Feature Testing
+
+#### Test Document Processing:
+1. Upload a PDF or TXT file
+2. Give it a knowledge base name
+3. Click "Process Documents"
+
+#### Test Voice Input:
+1. Click "Start Voice Recording"
+2. Speak your question
+3. Click "Use This Text"
+
+#### Test Text-to-Speech:
+1. Ask a question and get a response
+2. Enable "Audio Responses" checkbox
+3. The response should include an audio player
+
+### 5. Troubleshooting
+
+#### Common Issues:
+
+**"No module named 'gtts'":**
+```bash
+pip install gtts
+```
+
+**"AudioSystem not available":**
+```bash
+# Try alternative audio installation
+pip install pygame --upgrade
+```
+
+**"Microphone not working":**
+- Check microphone permissions in your browser/system
+- Try: `pip install pyaudio --upgrade`
+
+**"Google API Error":**
+- Verify your GEMINI_API_KEY is correct
+- Check your Google Cloud billing/quota
+
+**"Slow processing":**
+- Use smaller documents initially
+- Check your internet connection (for AI model downloads)
+
+#### Audio Troubleshooting:
+
+**No TTS audio:**
+1. Ensure gtts is installed: `pip install gtts`
+2. Check internet connection (gTTS requires online access)
+3. Try different browsers if audio doesn't play
+
+**Voice input not working:**
+1. Install/update pyaudio: `pip install pyaudio --upgrade`
+2. Check microphone permissions
+3. Try different browsers (Chrome works best)
+
+### 6. Development Setup
+
+For developers wanting to modify the code:
+
+```bash
+# Install development dependencies
+pip install pytest black flake8
+
+# Run tests
+pytest tests/
+
+# Format code
+black *.py
+
+# Check code quality
+flake8 *.py
+```
+
+### 7. Advanced Configuration
+
+#### Custom Audio Settings:
+Edit `audio_configuration.py` to customize:
+- TTS voices and languages
+- Audio quality settings
+- Recognition parameters
+
+#### Performance Tuning:
+- Adjust chunk sizes in `utils.py`
+- Modify similarity thresholds
+- Configure model parameters
+
+### 8. Docker Setup (Optional)
+
+```dockerfile
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Install system dependencies for audio
+RUN apt-get update && apt-get install -y \
+    portaudio19-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+
+EXPOSE 8501
+
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+```
+
+```bash
+# Build and run Docker container
+docker build -t rag-prototype .
+docker run -p 8501:8501 -e GEMINI_API_KEY=your_key_here rag-prototype
+```
+
+### 9. Getting Help
+
+If you encounter issues:
+1. Check the troubleshooting section above
+2. Review the system status in the app sidebar
+3. Check the console/terminal for error messages
+4. Ensure all dependencies are properly installed
+
+### 10. Optional Enhancements
+
+For enhanced functionality, consider installing:
+
+```bash
+# Advanced NLP
+pip install spacy
+python -m spacy download en_core_web_sm
+
+# Efficient vector search
+pip install faiss-cpu
+
+# Advanced document processing
+pip install unstructured[local-inference]
+
+# Database integration
+pip install chromadb pinecone-client
+```
