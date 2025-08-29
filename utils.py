@@ -1164,7 +1164,7 @@ User Query:
 
 Answer:
 """
-    model = genai.GenerativeModel('gemini-2.0-flash-exp')
+    model = genai.GenerativeModel('gemini-2.5-flash-lite')
     response = model.generate_content(prompt)
     if response and response.text:
         return response.text.strip()
@@ -1946,4 +1946,5 @@ def play_audio(file_path: str):
     try:
         playsound(file_path)
     except Exception as e:
+
         logging.error(f"Error playing audio file {file_path}: {e}")
