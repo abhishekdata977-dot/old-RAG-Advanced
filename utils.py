@@ -19,7 +19,7 @@ import hashlib
 import uuid
 import logging
 from typing import List, Dict, Tuple, Optional
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer, CrossEncoder
 from sklearn.metrics.pairwise import cosine_similarity
 import google.generativeai as genai
@@ -1949,4 +1949,5 @@ def play_audio(file_path: str):
     except Exception as e:
 
         logging.error(f"Error playing audio file {file_path}: {e}")
+
 
