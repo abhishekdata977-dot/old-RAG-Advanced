@@ -53,7 +53,8 @@ load_dotenv()
 
 # Load Gemini API key from environment variables (security best practice)
 # Support both GEMINI_API_KEY and GOOGLE_API_KEY for compatibility
-GEMINI_API_KEY = os.getenv('GEMINI_API_KEY') or os.getenv('GOOGLE_API_KEY')
+#GEMINI_API_KEY = os.getenv('GEMINI_API_KEY') or os.getenv('GOOGLE_API_KEY')
+GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 if not GEMINI_API_KEY:
     print("Warning: GEMINI_API_KEY or GOOGLE_API_KEY not found in environment variables")
     print("Please create a .env file with your Google Gemini API key")
@@ -1948,3 +1949,4 @@ def play_audio(file_path: str):
     except Exception as e:
 
         logging.error(f"Error playing audio file {file_path}: {e}")
+
