@@ -73,7 +73,7 @@ except Exception as e:
     st.stop()
 
 st.set_page_config(
-    page_title="RAG Prototype - Document Q&A",
+    page_title=" RAG Prototype - Intelligent Document Q&A System",
     page_icon="📚",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -646,4 +646,5 @@ st.markdown("""
     <h4>🚀 RAG Prototype with Advanced Voice I/O</h4>
     <p><em>Empowering intelligent document interaction through voice and text</em></p>
 </div>
+
 """, unsafe_allow_html=True)
